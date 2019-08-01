@@ -1,27 +1,52 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  sam-app
-
-  Sample SAM Template for sam-app
+Parameters:
+  AppName:
+    Type: String
+    Default: icon-api
+    Description: The application name
+  Environment:
+    Type: String
+    Default: dev
+    Description: The name of the application environment
+  IconBucket: 
+    Type: AWS::S3::Bucket
+    Default: xer-storage-bucket
+    Description: Location to store icons
   
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Environment:
+      Variables:
+        ICON_BUCKET: !Ref IconBucket
+    MemorySize: 256
+    Runtime: nodejs10.x
+    Timeout: 30
 
 Resources:
   HelloWorldFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
-      CodeUri: hello-world/
-      Handler: app.lambdaHandler
-      Runtime: nodejs10.x
+      CodeUri: ./src
+      Handler: lambdas/app.lambdaHandler
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+  GetIconFunction:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./src
+      Handler: lambdas/getIcon.getIcon
+      FunctionName: !Sub "${AppName}-${Environment}-getIcon"
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /icon/{id}
             Method: get
 
 Outputs:
