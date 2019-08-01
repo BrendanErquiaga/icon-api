@@ -10,7 +10,7 @@ Parameters:
     Default: dev
     Description: The name of the application environment
   IconBucket: 
-    Type: AWS::S3::Bucket
+    Type: String
     Default: xer-storage-bucket
     Description: Location to store icons
   
