@@ -19,7 +19,7 @@ exports.getIcon = async (event, context) => {
     return httpResponse(404, "Icon not found. Later one will be created");
   } else {
     let responseBody = await FormatIconResponse(listResponse, queryParams);
-    return httpResponse(200, responseBody);
+    return httpResponse(200, responseBody, true);
   }
 };
 
