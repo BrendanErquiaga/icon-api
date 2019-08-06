@@ -2,7 +2,7 @@ const httpResponse = require('../utils/httpResponse.js');
 const constants = require('../utils/constants.js');
 const AWS = require('aws-sdk');
 
-var s3 = new AWS.S3();
+let s3 = new AWS.S3();
 exports.getIcon = async (event, context) => {
   let objectKeyPrefix = constants.ICON_FOLDER_PATH + '/' + event.pathParameters.id + constants.ICON_NAME_ENDING_CHAR;
   let queryParams = event.queryStringParameters;
@@ -21,7 +21,7 @@ exports.getIcon = async (event, context) => {
     let responseBody = await FormatIconResponse(listResponse, queryParams);
     return httpResponse(200, responseBody, true);
   }
-};
+}
 
 async function FormatIconResponse(listResponse, queryParams) {
   if (queryParams && queryParams.list) {
