@@ -25,17 +25,6 @@ Globals:
     Timeout: 30
 
 Resources:
-  HelloWorldFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ./src
-      Handler: lambdas/app.lambdaHandler
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
   GetIconFunction:
     Type: AWS::Serverless::Function 
     Properties:
@@ -48,41 +37,17 @@ Resources:
           Properties:
             Path: /icon/{id}
             Method: get
-  APIIconFunction:
-    Type: AWS::Serverless::Function 
-    Properties:
-      CodeUri: .
-      Handler: src/lambdas/saveIcon.getIconFromAPI
-      FunctionName: !Sub "${AppName}-${Environment}-getAPIIcon"
-      Events:
-        GetIcon:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /test
-            Method: get
-  SaveIconToS3:
-    Type: AWS::Serverless::Function 
-    Properties:
-      CodeUri: .
-      Handler: src/lambdas/updateIcon.saveToS3
-      FunctionName: !Sub "${AppName}-${Environment}-saveIconToS3"
-      Events:
-        GetIcon:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /save
-            Method: get
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  GetIconAPI:
+    Description: "API Gateway endpoint URL for Prod stage for Get Icon function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/icon/{id}"
+  GetIconFunction:
+    Description: "GetIconFunction Function ARN"
+    Value: !GetAtt GetIconFunction.Arn
+  GetIconFunctionIamRole:
+    Description: "Implicit IAM Role created for Get Icon Function"
+    Value: !GetAtt GetIconFunctionRole.Arn
