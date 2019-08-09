@@ -174,12 +174,16 @@ async function FormatIconResponse(listResponse, queryParams) {
   if (queryParams && queryParams.list) {
     let iconList = [];
     for(let i = 0; i < listResponse.Contents.length; i++) {
-      iconList.push(listResponse.Contents[i].Key);
+      iconList.push(GetIconURL(listResponse.Contents[i].Key));
     }
     return iconList;
   } else {
-    return "http://" + process.env.ICON_BUCKET + '.s3.amazonaws.com/' + listResponse.Contents[0].Key;//TODO improve this so it never sends an alternate
+    return GetIconURL(listResponse.Contents[0].Key);
   }
+}
+
+function GetIconURL(iconKey) {
+  return "http://" + process.env.ICON_BUCKET + '.s3.amazonaws.com/' + iconKey;
 }
 
 async function ListObjects(listObjectsParams) {
