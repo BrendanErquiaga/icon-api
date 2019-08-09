@@ -39,8 +39,8 @@ Resources:
   GetIconFunction:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: ./src
-      Handler: lambdas/getIcon.getIcon
+      CodeUri: .
+      Handler: src/lambdas/getIcon.getIcon
       FunctionName: !Sub "${AppName}-${Environment}-getIcon"
       Events:
         GetIcon:
